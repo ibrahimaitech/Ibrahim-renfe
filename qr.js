@@ -59,30 +59,21 @@ router.get('/', async (req, res) => {
 				   let session = await Qr_Code_By_France_King.sendMessage(Qr_Code_By_France_King.user.id, { text: 'TOPU;;;' + b64data });
 	
 				   let FLASH_MD_TEXT = `
-*𝕰𝖊𝖊𝖞... 𝖙𝖔𝖕𝖚 𝖉𝖒𝖍 𝖍𝖆𝖘 𝖏𝖚𝖘𝖙 𝖈𝖔𝖓𝖓𝖊𝖈𝖙𝖊𝖉 𝖙𝖍𝖊 𝖘𝖊𝖘𝖘𝖎𝖔𝖓 𝖎𝖉*
-*Wow you choosen TOPU-MD complete the deployment and enyoy the speed*
-____________________________________
-╔════◇
-║『 *TOPU AI IS READY TO DEPLOY』
-║ YOUR SESSION IS READY. COPY IT  
-║ AND HOST IT ON YOUR WEB.
-╚════════════════════╝
-╔═════◇
-║ 『••• OWNER INFO •••』
 
-║ ❒ 𝐎wner: _https://wa.me/message/5WRTCPHFKUGFM1_
+*𝑺𝑬𝑺𝑺𝑰𝑶𝑵 𝑪𝑶𝑵𝑵𝑬𝑪𝑻𝑬𝑫*
 
-║ ❒ 𝐑𝐞𝐩𝐨: _https://github.com/Toputech/Topu-ai_
+||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-║ ❒ 𝐖𝐚𝐆𝐫𝐨𝐮𝐩: _https://chat.whatsapp.com/BxelCdrHnDYBNfMy2jafgI_
 
-║ ❒ 𝐖𝐚𝐂𝐡𝐚𝐧𝐧𝐞𝐥: _https://whatsapp.com/channel/0029VaeRrcnADTOKzivM0S1r_
-║ 
-╚════════════════════╝ 
- *©TOPU TECH*
-___________________________________
+❒❒❒❒❒❒❒❒❒❒❒❒❒❒❒❒❒❒
+*Follow this wachannel for bot updates*
+_https://whatsapp.com/channel/0029VaZuGSxEawdxZK9CzM0Y_
 
-_Don't Forget To Give Star To My Repo_`
+❒❒❒❒❒❒❒❒❒❒❒❒❒❒❒❒❒❒
+*For more info tap on the link below*
+_https://github.com/IBRAHIM-TECH-AI/IBRAHIM-ADAMS-INFO_
+
+_𝑴𝒂𝒅𝒆 𝑩𝒚 𝑰𝒃𝒓𝒂𝒉𝒊𝒎 𝑨𝒅𝒂𝒎𝒔_`
 	 await Qr_Code_By_France_King.sendMessage(Qr_Code_By_France_King.user.id,{text:FLASH_MD_TEXT},{quoted:session})
 
 
