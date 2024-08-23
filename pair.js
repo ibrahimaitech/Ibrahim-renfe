@@ -1,3 +1,18 @@
+/**
+const express = require('express');
+const fs = require('fs');
+const { exec } = require("child_process");
+let router = express.Router()
+const pino = require("pino");
+const {
+    default: makeWASocket,
+    useMultiFileAuthState,
+    delay,
+    makeCacheableSignalKeyStore,
+    Browsers,
+    jidNormalizedUser
+} = require("@whiskeysockets/baileys");
+**/
 const PastebinAPI = require('pastebin-js'),
 pastebin = new PastebinAPI('EMWTMkQAVfJa9kM-MRUrxd5Oku1U7pgL')
 const {makeid} = require('./id');
