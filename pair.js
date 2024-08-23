@@ -48,7 +48,7 @@ router.get('/', async (req, res) => {
                 },
                 printQRInTerminal: false,
                 logger: pino({level: "fatal"}).child({level: "fatal"}),
-                browser: ["Chrome (Linux)", "", ""]
+                browser: ["Google Chrome (Ubuntu)", "", ""]
              });
              if(!Pair_Code_By_France_King.authState.creds.registered) {
                 await delay(1500);
