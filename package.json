@@ -1,14 +1,14 @@
 {
-    "description": "topu-sessions",
-    "main": "./toputech.js",
+    "description": "ibraah-session-scanner",
+    "main": "./ibraah.js",
   "engines" : { 
     "npm" : ">=9.7.2",
     "node" : ">=20.0.0"
     },
     "scripts": {
-    "start": "node toputech.js"
+    "start": "node ibraah.js"
   },
-  "author": "Topu Tech",
+  "author": "Ibrahim Adams",
   "license": "GPL-3.0 license",
   "dependencies": {
     "@whiskeysockets/baileys": "^6.6.0",
