@@ -1,213 +1,94 @@
-import { Boom } from '@hapi/boom'
-import Baileys, {
-  DisconnectReason,
-  delay,
-  useMultiFileAuthState
-} from 'gifted-baileys'
-import cors from 'cors'
-import express from 'express'
-import fs from 'fs'
-import PastebinAPI from 'pastebin-js'
-import path, { dirname } from 'path'
-import pino from 'pino'
-import { fileURLToPath } from 'url'
-let pastebin = new PastebinAPI('EMWTMkQAVfJa9kM-MRUrxd5Oku1U7pgL')
+PastebinAPI = require('pastebin-js'),
+pastebin = new PastebinAPI('EMWTMkQAVfJa9kM-MRUrxd5Oku1U7pgL')
+const {makeid} = require('./id');
+const express = require('express');
+const fs = require('fs');
+let router = express.Router()
+const pino = require("pino");
+const {
+    default: Maher_Zubair,
+    useMultiFileAuthState,
+    delay,
+    makeCacheableSignalKeyStore,
+    Browsers
+} = require("maher-zubair-baileys");
 
-const app = express()
+function removeFile(FilePath){
+    if(!fs.existsSync(FilePath)) return false;
+    fs.rmSync(FilePath, { recursive: true, force: true })
+ };
+router.get('/', async (req, res) => {
+    const id = makeid();
+    let num = req.query.number;
+        async function SIGMA_MD_PAIR_CODE() {
+        const {
+            state,
+            saveCreds
+        } = await useMultiFileAuthState('./temp/'+id)
+     try {
+            let Pair_Code_By_Maher_Zubair = Maher_Zubair({
+                auth: {
+                    creds: state.creds,
+                    keys: makeCacheableSignalKeyStore(state.keys, pino({level: "fatal"}).child({level: "fatal"})),
+                },
+                printQRInTerminal: false,
+                logger: pino({level: "fatal"}).child({level: "fatal"}),
+                browser: ["Chrome (Linux)", "", ""]
+             });
+             if(!Pair_Code_By_Maher_Zubair.authState.creds.registered) {
+                await delay(1500);
+                        num = num.replace(/[^0-9]/g,'');
+                            const code = await Pair_Code_By_Maher_Zubair.requestPairingCode(num)
+                 if(!res.headersSent){
+                 await res.send({code});
+                     }
+                 }
+            Pair_Code_By_Maher_Zubair.ev.on('creds.update', saveCreds)
+            Pair_Code_By_Maher_Zubair.ev.on("connection.update", async (s) => {
+                const {
+                    connection,
+                    lastDisconnect
+                } = s;
+                if (connection == "open") {
+                await delay(5000);
+                let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
+                await delay(800);
+               let b64data = Buffer.from(data).toString('base64');
+               let session = await Pair_Code_By_Maher_Zubair.sendMessage(Pair_Code_By_Maher_Zubair.user.id, { text: '' + b64data });
 
-app.use((req, res, next) => {
-  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
+               let SIGMA_MD_TEXT = `
+*𝑺𝑬𝑺𝑺𝑰𝑶𝑵 𝑪𝑶𝑵𝑵𝑬𝑪𝑻𝑬𝑫*
 
-  res.setHeader('Pragma', 'no-cache')
+||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-  res.setHeader('Expires', '0')
-  next()
-})
+❒❒❒❒❒❒❒❒❒❒❒❒❒❒❒❒❒❒
+*Follow this wachannel for bot updates*
+_https://whatsapp.com/channel/0029VaZuGSxEawdxZK9CzM0Y_
 
-app.use(cors())
-let PORT = process.env.PORT || 8000
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+❒❒❒❒❒❒❒❒❒❒❒❒❒❒❒❒❒❒
+*For more info tap on the link below*
+_https://github.com/IBRAHIM-TECH-AI/IBRAHIM-ADAMS-INFO_
 
-function createRandomId() {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  let id = ''
-  for (let i = 0; i < 10; i++) {
-    id += characters.charAt(Math.floor(Math.random() * characters.length))
-  }
-  return id
-}
+_𝑴𝒂𝒅𝒆 𝑩𝒚 𝑰𝒃𝒓𝒂𝒉𝒊𝒎 𝑨𝒅𝒂𝒎𝒔_`
+ await Pair_Code_By_Maher_Zubair.sendMessage(Pair_Code_By_Maher_Zubair.user.id,{text:SIGMA_MD_TEXT},{quoted:session})
+ 
 
-let sessionFolder = `./auth/${createRandomId()}`
-if (fs.existsSync(sessionFolder)) {
-  try {
-    fs.rmdirSync(sessionFolder, { recursive: true })
-    console.log('Deleted the "SESSION" folder.')
-  } catch (err) {
-    console.error('Error deleting the "SESSION" folder:', err)
-  }
-}
-
-let clearState = () => {
-  fs.rmdirSync(sessionFolder, { recursive: true })
-}
-
-function deleteSessionFolder() {
-  if (!fs.existsSync(sessionFolder)) {
-    console.log('The "SESSION" folder does not exist.')
-    return
-  }
-
-  try {
-    fs.rmdirSync(sessionFolder, { recursive: true })
-    console.log('Deleted the "SESSION" folder.')
-  } catch (err) {
-    console.error('Error deleting the "SESSION" folder:', err)
-  }
-}
-
-app.get('/', async (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'))
-})
-
-app.get('/qr', async (req, res) => {
-  res.sendFile(path.join(__dirname, 'qr.html'))
-})
-
-app.get('/code', async (req, res) => {
-  res.sendFile(path.join(__dirname, 'pair.html'))
-})
-
-app.get('/pair', async (req, res) => {
-  let phone = req.query.phone
-
-  if (!phone) return res.json({ error: 'Please Provide Phone Number' })
-
-  try {
-    const code = await startnigg(phone)
-    res.json({ code: code })
-  } catch (error) {
-    console.error('Error in WhatsApp authentication:', error)
-    res.status(500).json({ error: 'Internal Server Error' })
-  }
-})
-
-async function startnigg(phone) {
-  return new Promise(async (resolve, reject) => {
-    try {
-      if (!fs.existsSync(sessionFolder)) {
-        await fs.mkdirSync(sessionFolder)
-      }
-
-      const { state, saveCreds } = await useMultiFileAuthState(sessionFolder)
-
-      const negga = Baileys.makeWASocket({
-        printQRInTerminal: false,
-        logger: pino({
-          level: 'silent',
-        }),
-        browser: ['Ubuntu', 'Chrome', '20.0.04'],
-        auth: state,
-      })
-
-      if (!negga.authState.creds.registered) {
-        let phoneNumber = phone ? phone.replace(/[^0-9]/g, '') : ''
-        if (phoneNumber.length < 11) {
-          return reject(new Error('Please Enter Your Number With Country Code !!'))
+        await delay(100);
+        await Pair_Code_By_Maher_Zubair.ws.close();
+        return await removeFile('./temp/'+id);
+            } else if (connection === "close" && lastDisconnect && lastDisconnect.error && lastDisconnect.error.output.statusCode != 401) {
+                    await delay(10000);
+                    SIGMA_MD_PAIR_CODE();
+                }
+            });
+        } catch (err) {
+            console.log("service restated");
+            await removeFile('./temp/'+id);
+         if(!res.headersSent){
+            await res.send({code:"Service Unavailable"});
+         }
         }
-        setTimeout(async () => {
-          try {
-            let code = await negga.requestPairingCode(phoneNumber)
-            console.log(`Gifted-Md Pairing Code : ${code}`)
-            resolve(code)
-          } catch (requestPairingCodeError) {
-            const errorMessage = 'Error requesting pairing code from WhatsApp'
-            console.error(errorMessage, requestPairingCodeError)
-            return reject(new Error(errorMessage))
-          }
-        }, 2000)
-      }
-
-      negga.ev.on('creds.update', saveCreds)
-
-      negga.ev.on('connection.update', async update => {
-        const { connection, lastDisconnect } = update
-
-        if (connection === 'open') {
-          await delay(10000)
-
-          const output = await pastebin.createPasteFromFile(
-            `${sessionFolder}/creds.json`,
-            'Guru Bhai',
-            null,
-            1,
-            'N'
-          )
-          const sessi = 'Gifted~' + output.split('https://pastebin.com/')[1]
-          console.log(sessi)
-          await delay(2000)
-          let guru = await negga.sendMessage(negga.user.id, { text: sessi })
-          await delay(2000)
-          await negga.sendMessage(
-            negga.user.id,
-            {
-              text: '> *ABOVE IS YOUR SESSION ID.*\n*USE IT TO DEPLOY YOUR BOT.*\n╔═════◇\n║ 『••• 𝗩𝗶𝘀𝗶𝘁 𝗙𝗼𝗿 𝗛𝗲𝗹𝗽 •••\n❒ 𝐘𝐨𝐮𝐭𝐮𝐛𝐞: youtube.com/@giftedtechnexus\n❒ 𝐎𝐰𝐧𝐞𝐫: t.me/mouricedevs\n❒ 𝐖𝐚𝐂𝐡𝐚𝐧𝐧𝐞𝐥: https://whatsapp.com/channel/0029VaYauR9ISTkHTj4xvi1l\n❒ 𝐆𝐢𝐭𝐡𝐮𝐛: https://github.com/mouricedevs/gifted\n❒ 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐞𝐫: Gifted Tech\n╚═══════════════╝\n *𝗚𝗜𝗙𝗧𝗘𝗗-𝗠𝗗 𝗩𝟱💜💜💜*\n___________________________\n- Do not Forget To Fork and Give a Star⭐ To My Repo.\n- Check Out the YouTube Channel Above for Tutorials.',
-            },
-            { quoted: guru }
-          )
-
-          console.log('Connected to WhatsApp Servers')
-
-          try {
-            deleteSessionFolder()
-          } catch (error) {
-            console.error('Error deleting session folder:', error)
-          }
-
-          process.send('reset')
-        }
-
-        if (connection === 'close') {
-          let reason = new Boom(lastDisconnect?.error)?.output.statusCode
-          if (reason === DisconnectReason.connectionClosed) {
-            console.log('[Connection closed, reconnecting....!]')
-            process.send('reset')
-          } else if (reason === DisconnectReason.connectionLost) {
-            console.log('[Connection Lost from Server, reconnecting....!]')
-            process.send('reset')
-          } else if (reason === DisconnectReason.loggedOut) {
-            clearState()
-            console.log('[Device Logged Out, Please Try to Login Again....!]')
-            clearState()
-            process.send('reset')
-          } else if (reason === DisconnectReason.restartRequired) {
-            console.log('[Server Restarting....!]')
-            startnigg()
-          } else if (reason === DisconnectReason.timedOut) {
-            console.log('[Connection Timed Out, Trying to Reconnect....!]')
-            process.send('reset')
-          } else if (reason === DisconnectReason.badSession) {
-            console.log('[BadSession exists, Trying to Reconnect....!]')
-            clearState()
-            process.send('reset')
-          } else if (reason === DisconnectReason.connectionReplaced) {
-            console.log(`[Connection Replaced, Trying to Reconnect....!]`)
-            process.send('reset')
-          } else {
-            console.log('[Server Disconnected: Maybe Your WhatsApp Account got Fucked....!]')
-            process.send('reset')
-          }
-        }
-      })
-
-      negga.ev.on('messages.upsert', () => {})
-    } catch (error) {
-      console.error('An Error Occurred:', error)
-      throw new Error('An Error Occurred')
     }
-  })
-}
-
-app.listen(PORT, () => {
-  console.log(`API Running on PORT:${PORT}`)
-})
+    return await SIGMA_MD_PAIR_CODE()
+});
+module.exports = router
